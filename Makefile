@@ -8,11 +8,11 @@ endif
 ifeq ($(lport),)
 lport := 8888
 endif
-rpath := /root/nbs
+rpath := /root/rnb
 rregion := us-east
 rimage := linode/debian9
 rtype := g6-standard-1
-rlabel := nbs
+rlabel := rnb
 # virtual env
 ifeq ($(vname),)
 vname := venv
@@ -81,11 +81,11 @@ help:
 ## usage instructions
 .PHONY: quickstart
 quickstart:
-	@printf "${YELLOW}nbs${RESET}: simplify provisioning & using remote GPUs on Linode\n\n"
+	@printf "${YELLOW}rnb${RESET}: simplify provisioning & using remote GPUs on Linode\n\n"
 	@printf "${LIGHTPURPLE}setup${RESET}\n\n"
 	@echo "${GREEN}1)${RESET}  create a venv & install requirements: "
 	@echo
-	@echo "	${RED}make cvenv && make deps${RESET}"
+	@echo "	${RED}make deps${RESET}"
 	@echo
 	@echo "${GREEN}2)${RESET} get a PAT from Linode & configure the CLI (see ${GREEN}notes${RESET}): "
 	@echo
@@ -99,11 +99,9 @@ quickstart:
 	@echo
 	@echo "${GREEN}2)${RESET} initialize & start ${GREEN}Jupyter${RESET} notebook on the remote host"
 	@echo
-	@echo "	${RED}make genkey${RESET}		${LIGHTPURPLE} [ only once ]${RESET}"
-	@echo "	${RED}make addkey${RESET}		${LIGHTPURPLE} [ only once ]${RESET}"
 	@echo "	${RED}make crnb${RESET}			${LIGHTPURPLE} [ only once ]${RESET}"
 	@echo
-	@echo "${GREEN}3)${RESET} connect to the ${GREEN}Jupyter${RESET} notebook on the remote host"
+	@echo "${GREEN}3)${RESET} connect to/run the ${GREEN}Jupyter${RESET} notebook on the remote host"
 	@echo
 	@echo "	${RED}make rnb${RESET}"
 	@echo
@@ -158,15 +156,15 @@ list:
 
 ## get id of remote machine [linode-cli + jq]
 getid:
-	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "nbs") | {id}' | jq '.id')"
+	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "rnb") | {id}' | jq '.id')"
 
 ## get ip of remote machine [linode-cli + jq]
 getip:
-	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "nbs") | {ipv4}' | jq '.ipv4[]')"
+	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "rnb") | {ipv4}' | jq '.ipv4[]')"
 
 ## get status of remote machine [linode-cli + jq]
 getstatus:
-	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "nbs") | {status}' | jq '.status')"
+	@echo "$(shell linode-cli linodes list --json | jq '.[] | select(.label == "rnb") | {status}' | jq '.status')"
 
 ## list available remote machine types [linode-cli]
 types:
@@ -227,8 +225,9 @@ rsync:
 	@scp -i $(CURDIR)/.ssh/id_rsa -rC ${ruser}@$(shell make getip):${rpath}/* .
 
 ## create & start jupyter notebook on remote machine [jupyter]
-crnb: renv lsync
+crnb: genkey addkey renv lsync
 	@echo "creating remote notebook..."
+	@make addkey
 	@ssh -i $(CURDIR)/.ssh/id_rsa -tL ${lport}:localhost:8888 ${ruser}@$(shell make getip) "cd ${rpath} && make nb"
 
 ## start jupyter notebook on remote machine [jupyter]

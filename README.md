@@ -5,13 +5,13 @@ remote `Jupyter` `n`ote`b`ooks on `r`emote Linode machines
 ## quickstart
 
 ```
-nbs: simplify provisioning & using remote GPUs on Linode
+rnb: simplify provisioning & using remote GPUs on Linode
 
 setup
 
 1)  create a venv & install requirements: 
 
-        make cvenv && make deps
+        make deps
 
 2) get a PAT from Linode & configure the CLI (see notes): 
 
@@ -25,11 +25,9 @@ usage
 
 2) initialize & start Jupyter notebook on the remote host
 
-        make genkey              [ only once ]
-        make addkey              [ only once ]
         make crnb                        [ only once ]
 
-3) connect to the Jupyter notebook on the remote host
+3) connect to/run the Jupyter notebook on the remote host
 
         make rnb
 
@@ -37,7 +35,7 @@ usage
 
         make delete
 
-notes:  - make sure to save your auth token in an .env file as Linode doesn't let you retrieve it later.
+**notes**:  - make sure to save your auth token in an .env file as Linode doesn't let you retrieve it later.
 
 
         - make sure to sync your data before and after training models.
@@ -67,7 +65,7 @@ cmds:
   getip:                get ip of remote machine [linode-cli + jq]
   getstatus:            get status of remote machine [linode-cli + jq]
   types:                list available remote machine types [linode-cli]
-  create:               create / provision new remote machine [linode-cli]
+  create:               crewate / provision new remote machine [linode-cli]
   delete:               delete remote machine [linode-cli]
   connect:              connect to remote machine [ssh]
 
