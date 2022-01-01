@@ -35,7 +35,7 @@ usage
 
         make delete
 
-**notes**:  - make sure to save your auth token in an .env file as Linode doesn't let you retrieve it later.
+notes:  - make sure to save your auth token in an .env file as Linode doesn't let you retrieve it later.
 
 
         - make sure to sync your data before and after training models.
