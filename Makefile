@@ -135,6 +135,7 @@ deps: cvenv
 	@echo "installing deps..."
 	@$(CURDIR)/${vname}/bin/pip3 install --upgrade pip wheel setuptools
 	@$(CURDIR)/${vname}/bin/pip3 install -r requirements.txt
+	@$(CURDIR)/${vname}/bin/python3 -m spacy download en_core_web_lg
 
 ## start jupyter notebook locally [jupyter]
 nb: deps
