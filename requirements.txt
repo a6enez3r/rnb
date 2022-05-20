@@ -2,6 +2,6 @@ linode-cli==5.19.0
 pandas==1.4.2
 numpy==1.22.3
 plotly==5.8.0
-scikit-learn==1.1.0
+scikit-learn==1.1.1
 jupyter==1.0.0
 spacy==3.3.0
